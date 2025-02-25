@@ -20,8 +20,8 @@ class TestBooksCollector:
         collector.add_new_book('Что делать, если ваш кот хочет вас убить')
 
         # проверяем, что добавилось именно две
-        # словарь books_rating, который нам возвращает метод get_books_rating, имеет длину 2
-        assert len(collector.get_books_rating()) == 2
+        # словарь books_genre, который нам возвращает метод get_books_genre, имеет длину 2
+        assert len(collector.get_books_genre()) == 2
 
     # напиши свои тесты ниже
     # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
@@ -41,13 +41,21 @@ class TestBooksCollector:
 
         assert len(collector.get_books_genre()) == 1
 
-    @pytest.mark.parametrize('book, genre', [['Непобедимый', 'Фантастика'], ['Непобедимый', 'Драма']])
+    @pytest.mark.parametrize('book, genre', [['Непобедимый', 'Фантастика'], ['Голубое сало', 'Комедии']])
     def test_set_book_genre_book_and_genre_exists_true(self, book, genre):
         collector = BooksCollector()
         collector.add_new_book(book)
         collector.set_book_genre(book, genre)
 
-        assert genre in collector.get_books_genre()[book] or 'Драма' not in collector.get_books_genre()[book]
+        assert genre in collector.get_books_genre()[book]
+
+    @pytest.mark.parametrize('book, genre', [['Властелин колец', 'Фэнтези'], ['Нейромант', 'None']])
+    def test_set_book_genre_genre_doesnt_exist_only_book_name(self, book, genre):
+        collector = BooksCollector()
+        collector.add_new_book(book)
+        collector.set_book_genre(book, genre)
+
+        assert genre not in collector.get_books_genre()[book]
 
     def test_get_book_genre_book_and_genre_exist_true(self):
         collector = BooksCollector()
